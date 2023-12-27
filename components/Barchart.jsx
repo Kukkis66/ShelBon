@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Button, Switch } from 'react-native';
+import { View, Button, Switch, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { BarChart } from 'react-native-chart-kit';
 import { Dimensions } from 'react-native'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import SwitchButtons from './SwitchButtons';
 
 
@@ -10,11 +10,39 @@ import SwitchButtons from './SwitchButtons';
 
 
 const Barchart = ({dailyData}) => {
-// console.log(dailyData)
-const [showWatts, setShowWatts] = useState(false)
+console.log(dailyData)
+const [showWatts, setShowWatts] = useState(false);
+const [chartData, setChartData] = useState([])
+const [currentWeek, setCurrentWeek] = useState(0); // State to track the current week
 const daysOfWeekStartingFromMonday = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
+const fetchDataForWeek = async (week) => {
+    try {
+      // Assume data is an array of entries with a timestamp field indicating the week
+      const filteredData = dailyData.filter(entry => {const weekNumber = getWeekNumber(entry.date); return weekNumber === week;});
+    
+      // Update the data state or perform any other necessary actions with the filtered data
+      setChartData(filteredData);
+    } catch (error) {
+      console.error('Error fetching data for the week:', error);
+    }
+  };
+  useEffect(() => {
+    // Fetch initial data when the component mounts
+    fetchDataForWeek(currentWeek);
+    
+
+  }, [currentWeek, dailyData]);
+
+  useEffect(() => {
+    const currentWeekNumber = getWeekNumber(new Date());
+    setCurrentWeek(currentWeekNumber);
+  
+    
+  }, [])
+  
 // Function to get the index of a day
+
 const getIndexForDay = (day) => {
   const startingIndex = 1; // Monday is at index 1
   const index = (daysOfWeekStartingFromMonday.indexOf(day) + startingIndex) % daysOfWeekStartingFromMonday.length;
@@ -23,7 +51,7 @@ const getIndexForDay = (day) => {
 
 // Function to get the price for a day
 const getDataForDay = (day) => {
-  const matchingEntry = dailyData.find(entry => entry.day === getIndexForDay(day));
+  const matchingEntry = chartData.find(entry => entry.day === getIndexForDay(day));
   
   return matchingEntry
       ? {
@@ -32,9 +60,6 @@ const getDataForDay = (day) => {
         }
       : { totalPrice: 0, totalWatts: 0 }
 };
-
-
-
 
 
 const data =
@@ -55,7 +80,23 @@ const toggleSwitch = (event) => {
 
 
 const deviceWidth = Dimensions.get('window').width
+
+
+const getWeekNumber = (timestamp) => {
+    const date = new Date(timestamp);
+    date.setHours(0, 0, 0, 0);
+    date.setDate(date.getDate() + 4 - (date.getDay() || 7));
   
+    const yearStart = new Date(date.getFullYear(), 0, 1);
+    const weekNumber = Math.ceil(((date - yearStart) / 86400000 + 1) / 7);
+  
+    return weekNumber;
+  };
+  
+const handleWeekChange = (increment) => {
+    setCurrentWeek((prevWeek) => prevWeek + increment);
+    
+  };
 
     return (
         
@@ -107,13 +148,37 @@ const deviceWidth = Dimensions.get('window').width
           
         
         />
-        
+        <View style={styles.weekArrowsContainer}>
+        <TouchableOpacity onPress={() => handleWeekChange(-1)}>
+          <Text style={styles.arrow}>{'<'}</Text>
+        </TouchableOpacity>
+        <Text style={styles.currentWeekIndicator}>Week {currentWeek}</Text>
+        <TouchableOpacity onPress={() => handleWeekChange(1)}>
+          <Text style={styles.arrow}>{'>'}</Text>
+        </TouchableOpacity>
+      </View>
       </View>
       
     );
   };
 
-  
+  const styles = StyleSheet.create({
+    weekArrowsContainer: {
+    
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginTop: 10,
+    },
+    arrow: {
+      fontSize: 30,
+      marginHorizontal: 10,
+    },
+    currentWeekIndicator: {
+      fontSize: 18,
+      fontWeight: 'bold',
+    },
+  });
   
 export default Barchart;
   
