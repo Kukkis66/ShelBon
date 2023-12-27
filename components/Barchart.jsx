@@ -10,7 +10,7 @@ import SwitchButtons from './SwitchButtons';
 
 
 const Barchart = ({dailyData}) => {
-console.log(dailyData)
+
 const [showWatts, setShowWatts] = useState(false);
 const [chartData, setChartData] = useState([])
 const [currentWeek, setCurrentWeek] = useState(0); // State to track the current week
@@ -35,12 +35,17 @@ const fetchDataForWeek = async (week) => {
   }, [currentWeek, dailyData]);
 
   useEffect(() => {
-    const currentWeekNumber = getWeekNumber(new Date());
-    setCurrentWeek(currentWeekNumber);
+    setCurrentWeek(currentWeekNumber)
   
     
   }, [])
   
+  const currentWeekNumber = () => {
+    const thisWeek = getWeekNumber(new Date());
+    
+    return thisWeek
+}
+
 // Function to get the index of a day
 
 const getIndexForDay = (day) => {
@@ -94,13 +99,14 @@ const getWeekNumber = (timestamp) => {
   };
   
 const handleWeekChange = (increment) => {
+    
     setCurrentWeek((prevWeek) => prevWeek + increment);
     
   };
 
     return (
         
-      <View style={{ justifyContent: 'center', alignItems: 'center', }}>
+      <View style={{ justifyContent: 'center', alignSelf: 'center'}}>
         <SwitchButtons showWatts={showWatts} toggleSwitch={toggleSwitch}/>
         <BarChart
           data={data}
@@ -150,12 +156,19 @@ const handleWeekChange = (increment) => {
         />
         <View style={styles.weekArrowsContainer}>
         <TouchableOpacity onPress={() => handleWeekChange(-1)}>
-          <Text style={styles.arrow}>{'<'}</Text>
+          <Text style={styles.arrow}>{' < '}</Text>
         </TouchableOpacity>
         <Text style={styles.currentWeekIndicator}>Week {currentWeek}</Text>
+        {currentWeek < currentWeekNumber() ? (
         <TouchableOpacity onPress={() => handleWeekChange(1)}>
-          <Text style={styles.arrow}>{'>'}</Text>
+        <Text style={styles.arrow}>{' > '}</Text>
         </TouchableOpacity>
+            ) : (
+        <View >
+        <Text style={styles.nonPressableArrow}>{' > '}</Text>
+        </View>
+        )}
+       
       </View>
       </View>
       
@@ -168,16 +181,51 @@ const handleWeekChange = (increment) => {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      marginTop: 10,
+      marginBottom: 20,
+      
     },
     arrow: {
-      fontSize: 30,
-      marginHorizontal: 10,
+      fontSize: 25,
+      marginHorizontal: 20,
+      fontWeight: 'bold',
+      backgroundColor: '#f1f1f1',  
+        
+        color: '#E85A4F',
+      
+      padding: 10,
+      borderWidth: 1,
+      borderRadius: 4,
+      borderColor: '#ccc',
+      
+    alignSelf: 'center', 
     },
     currentWeekIndicator: {
-      fontSize: 18,
+      fontSize: 25,
       fontWeight: 'bold',
+      padding: 10,
+      borderWidth: 1,
+      borderRadius: 4,
+      borderColor: '#ccc',
+      backgroundColor: '#f1f1f1', 
+      
+      color: '#6E798C',
+        
     },
+    nonPressableArrow: {
+        fontSize: 25,
+      marginHorizontal: 20,
+      fontWeight: 'bold',
+      backgroundColor: '#f1f1f1', 
+      
+      color: '#6E798C',
+      
+      padding: 10,
+      borderWidth: 1,
+      borderRadius: 4,
+      borderColor: '#ccc',
+      
+    alignSelf: 'center',
+    }
   });
   
 export default Barchart;

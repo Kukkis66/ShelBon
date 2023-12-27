@@ -4,7 +4,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 const DeviceButton = ({ deviceName, onPress, isActive, onButtonPress }) => {
     
-    console.log(isActive)
+    
 
 
     return (
@@ -23,7 +23,7 @@ const DeviceButton = ({ deviceName, onPress, isActive, onButtonPress }) => {
     container: {
         
       
-        // flex: 1,
+        
         justifyContent: 'center',
         alignItems: 'center',
         marginBottom: 20,
@@ -39,8 +39,8 @@ const DeviceButton = ({ deviceName, onPress, isActive, onButtonPress }) => {
       borderWidth: 1,
       borderRadius: 4,
       borderColor: '#ccc',
-      width: '92%',  // Set the width to 93%
-    alignSelf: 'center',  // Center the button horizontally
+      width: '92%', 
+    alignSelf: 'center', 
     },
     
 
@@ -60,8 +60,3 @@ inactiveButton: {
   
   export default DeviceButton;
 
-// <Button
-//       title={deviceName.name}
-//       onPress={() => onPress(deviceName)}
-//       // Add any additional styling or props as needed
-//     />

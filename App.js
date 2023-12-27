@@ -84,7 +84,7 @@ export default function App() {
     try {
       const response = await axios.get(`http://sheldonapi.ddns.net/api/${deviceName}`);
       
-      console.log(response.data);
+      
       setData(response.data);
       transformToDaily(response.data);
     } catch (error) {

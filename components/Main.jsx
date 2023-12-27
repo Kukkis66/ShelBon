@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FlatList, Text, StyleSheet, View } from 'react-native';
+import {  Text, StyleSheet, View, ScrollView } from 'react-native';
 import DeviceButton from './DeviceButton';
 import Barchart from './Barchart';
 
@@ -40,43 +40,36 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#6E798C',
   },
+  scrollContent: {
+    paddingTop: 20,
+    paddingBottom: 70,
+  }
  
 });
 
-const Item = (props) => (
-    <View style={styles.item}>
-      <Text style={styles.time}>{props.time}</Text>
-      <Text style={styles.time}>Kulutus: {props.total} wattia</Text>
-    </View>
-  );
 
-const ItemSeparator = () => <View style={styles.separator} />;
 
-const Main = ({ dailyData, data, devices, handleDevicePress }) => {
+const Main = ({ dailyData, devices, handleDevicePress }) => {
   const [activeDevice, setActiveDevice] = useState(null);
 
   const handleButtonPress = (deviceName) => {
     setActiveDevice(deviceName.name === activeDevice ? null : deviceName.name);
     
   };
-  console.log(activeDevice)
+  
   
   return (
     
     <View style={styles.container}>
       <Barchart dailyData={dailyData}
       />
+      <ScrollView contentContainerStyle={styles.scrollContent}>
       {devices.map((deviceName) => (
         <DeviceButton key={deviceName.id} deviceName={deviceName} onPress={handleDevicePress} isActive={deviceName.name === activeDevice} onButtonPress={handleButtonPress} />
       ))}
       
-      
-        {/* <FlatList
-        data={data}
-        ItemSeparatorComponent={ItemSeparator}
-        renderItem={({ item }) => <Item time={item.time} total={item.watts_during_time_interval}/>}
-        keyExtractor={(item) => item.time}
-      /> */}
+      </ScrollView>
+        
     </View>
     
   );
