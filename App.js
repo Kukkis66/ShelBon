@@ -55,14 +55,15 @@ export default function App() {
       console.error('Error saving devices:', error);
     }
   };
-
+  
   const addDevice = () => {
     if (deviceName && deviceType) {
-      const newDevice = { id: Date.now().toString(), name: deviceName, type: deviceType };
+      const newDevice = { id: Date.now().toString(), name: deviceName, ip: deviceType };
       setDevices([...devices, newDevice]);
+      saveDevices();
       setDeviceName('');
-    setDeviceType('');
-      saveDevices(); // Save devices after adding a new one
+      setDeviceType('');
+       
     }
   };
   

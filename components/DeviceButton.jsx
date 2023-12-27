@@ -8,13 +8,22 @@ const DeviceButton = ({ deviceName, onPress, isActive, onButtonPress }) => {
 
 
     return (
-      <View style={styles.container}>
-        <TouchableOpacity
-          style={[styles.button, isActive ? styles.activeButton : styles.inactiveButton]}
-          onPress={() => {onPress(deviceName); {onButtonPress(deviceName)}}}
-        >
-          <Text style={[styles.buttonText, isActive ? styles.activeButton : styles.inactiveButton]}>{deviceName.name}</Text>
-        </TouchableOpacity>
+        <View style={styles.container}>
+        {isActive ? (
+          <View style={[styles.button, styles.activeButton]}>
+            <Text style={[styles.activeButton]}>{deviceName.name}</Text>
+          </View>
+        ) : (
+          <TouchableOpacity
+            style={[styles.button, styles.inactiveButton]}
+            onPress={() => {
+              onPress(deviceName);
+              onButtonPress(deviceName);
+            }}
+          >
+            <Text style={[styles.inactiveButton]}>{deviceName.name}</Text>
+          </TouchableOpacity>
+        )}
       </View>
     );
   };

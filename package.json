@@ -20,7 +20,10 @@
     "react-native-chart-kit": "^6.12.0",
     "react-native-linear-gradient": "^2.8.3",
     "react-native-svg": "13.9.0",
-    "react-navigation": "^5.0.0"
+    "react-navigation": "^5.0.0",
+    "react-native-web": "~0.19.6",
+    "react-dom": "18.2.0",
+    "@expo/webpack-config": "^19.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
