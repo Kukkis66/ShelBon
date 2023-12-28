@@ -24,6 +24,7 @@ export default function App() {
   useEffect(() => {
     fetchData();
     loadDevices();
+    
   }, []);
 
   const loadDevices = async () => {
@@ -89,7 +90,7 @@ export default function App() {
       setData(response.data);
       transformToDaily(response.data);
     } catch (error) {
-      console.error('something went wrong: ', error);
+      console.log('something went wrong: ', error);
       
     }
   };
@@ -134,7 +135,11 @@ export default function App() {
 
   
 
-
+  const deleteDevice = (deviceId) => {
+    const updatedDevices = devices.filter((device) => device.id !== deviceId);
+    setDevices(updatedDevices);
+    saveDevices();
+  };
   
 
 
@@ -201,7 +206,7 @@ export default function App() {
       {...props}
       deviceName={deviceName}
       deviceType={deviceType}
-      
+      deleteDevice={deleteDevice}
       devices={devices}
       handleName={handleName}
       handleType={handleType}
