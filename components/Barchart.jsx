@@ -13,7 +13,8 @@ const Barchart = ({dailyData}) => {
 
 const [showWatts, setShowWatts] = useState(false);
 const [chartData, setChartData] = useState([])
-const [currentWeek, setCurrentWeek] = useState(0); // State to track the current week
+const [currentWeek, setCurrentWeek] = useState(0);
+const [currentYear, setCurrentYear] = useState(0);// State to track the current week
 const daysOfWeekStartingFromMonday = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 const fetchDataForWeek = async (week) => {
@@ -36,7 +37,7 @@ const fetchDataForWeek = async (week) => {
 
   useEffect(() => {
     setCurrentWeek(currentWeekNumber)
-  
+    setCurrentYear(currentYearNumber)
     
   }, [])
   
@@ -44,6 +45,12 @@ const fetchDataForWeek = async (week) => {
     const thisWeek = getWeekNumber(new Date());
     
     return thisWeek
+}
+
+const currentYearNumber = () => {
+  const thisYear = new Date().getFullYear();
+  
+  return thisYear
 }
 
 // Function to get the index of a day
@@ -98,12 +105,32 @@ const getWeekNumber = (timestamp) => {
     return weekNumber;
   };
   
-const handleWeekChange = (increment) => {
-    
-    setCurrentWeek((prevWeek) => prevWeek + increment);
-    
+  const handleWeekChange = (increment) => {
+    setCurrentWeek((prevWeek) => {
+      
+      const isFirstWeekOfCurrentYear = prevWeek === 1 && increment === -1;
+      const isLastWeekOfCurrentYear = prevWeek === 52 && increment === 1;
+      if (isFirstWeekOfCurrentYear) {
+        // If the current week is 1 and the user presses backward, set to the last week of the previous year
+        setCurrentWeekAndYear(52, currentYear - 1); // Update this function to set both week and year
+      }
+      if (isLastWeekOfCurrentYear) {
+        // If the current week is 1 and the user presses backward, set to the last week of the previous year
+        setCurrentWeekAndYear(1, currentYear + 1); // Update this function to set both week and year
+      }
+       else {
+        // Otherwise, update the week normally
+        return prevWeek + increment;
+      }
+    });
   };
 
+  const setCurrentWeekAndYear = (week, year) => {
+    setCurrentWeek(week);
+    setCurrentYear(year);
+  };
+
+  
     return (
         
       <View style={{ justifyContent: 'center', alignSelf: 'center'}}>
@@ -158,8 +185,8 @@ const handleWeekChange = (increment) => {
         <TouchableOpacity onPress={() => handleWeekChange(-1)}>
           <Text style={styles.arrow}>{' < '}</Text>
         </TouchableOpacity>
-        <Text style={styles.currentWeekIndicator}>Week {currentWeek}</Text>
-        {currentWeek < currentWeekNumber() ? (
+        <Text style={styles.currentWeekIndicator}>{currentWeek}/{currentYear}</Text>
+        {currentWeek < currentWeekNumber() || currentYear < currentYearNumber() ? (
         <TouchableOpacity onPress={() => handleWeekChange(1)}>
         <Text style={styles.arrow}>{' > '}</Text>
         </TouchableOpacity>

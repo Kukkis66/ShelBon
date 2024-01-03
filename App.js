@@ -60,11 +60,27 @@ export default function App() {
   const addDevice = () => {
     if (deviceName && deviceType) {
       const newDevice = { id: Date.now().toString(), name: deviceName, ip: deviceType };
-      setDevices([...devices, newDevice]);
-      saveDevices();
-      setDeviceName('');
-      setDeviceType('');
-       
+      
+      
+      const updateEndpoint = 'http://sheldonapi.ddns.net/api/settings';
+  
+      // Make a PUT request to update the 'shellies' array
+      axios.put(updateEndpoint, { shellies: [...devices, newDevice] })
+        .then(response => {
+          // Handle the response, if needed
+          console.log(response.data);
+          setDevices([...devices, newDevice]);
+          saveDevices();
+          setDeviceName('');
+          setDeviceType('');
+        })
+        .catch(error => {
+          // Handle the error
+          console.error('Error updating settings:', error);
+        });
+  
+      // Update the local state and save to settings.json
+      
     }
   };
   
@@ -80,13 +96,13 @@ export default function App() {
 
   
   
+console.log(devices)
 
-
-  const fetchData = async (deviceName) => {
+  const fetchData = async (deviceId) => {
     try {
-      const response = await axios.get(`http://sheldonapi.ddns.net/api/${deviceName}`);
+      const response = await axios.get(`http://sheldonapi.ddns.net/api/device/${deviceId}`);
       
-      
+      console.log(response.data)
       setData(response.data);
       transformToDaily(response.data);
     } catch (error) {
@@ -96,8 +112,9 @@ export default function App() {
   };
 
   handleDevicePress = (device) => {
-    const deviceName = device.name;
-    fetchData(deviceName)
+    const deviceId = device.id;
+    console.log(device)
+    fetchData(deviceId)
   }
   
   
@@ -136,9 +153,24 @@ export default function App() {
   
 
   const deleteDevice = (deviceId) => {
+    
+    const deleteEndpoint = `http://sheldonapi.ddns.net/api/settings/${deviceId}`;
     const updatedDevices = devices.filter((device) => device.id !== deviceId);
     setDevices(updatedDevices);
     saveDevices();
+    // Make a DELETE request to delete the device
+    axios.delete(deleteEndpoint)
+      .then(response => {
+        // Handle the response, if needed
+        console.log(response.data);
+  
+        // Update the local state and save to settings.json
+        
+      })
+      .catch(error => {
+        // Handle the error
+        console.error('Error deleting device:', error);
+      });
   };
   
 
