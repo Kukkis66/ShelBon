@@ -3,15 +3,17 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput,  Button, StyleSheet, Switch } from 'react-native';
 
-const SettingsScreen = () => {
+const SettingsScreen = ({handleFixedPrice, saveFixedPrice}) => {
   const [input1, setInput1] = useState('');
   const [input2, setInput2] = useState('');
   const [checkbox1, setCheckbox1] = useState(false);
   const [checkbox2, setCheckbox2] = useState(false);
 
   const handleSaveSettings = () => {
-    // Handle saving settings logic here
-    console.log('Settings saved:', { input1, input2, checkbox1, checkbox2 });
+    saveFixedPrice(input1)
+    handleFixedPrice(checkbox1)
+
+    console.log('Settings saved:', { input1, input2, checkbox2 });
   };
 
   return (

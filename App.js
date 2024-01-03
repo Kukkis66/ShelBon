@@ -8,7 +8,7 @@ import Main from './components/Main';
 import SettingsScreen from './components/Settings';
 import DevicesScreen from './components/DeviceScreen';
 import * as FileSystem from 'expo-file-system';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const Tab = createBottomTabNavigator();
@@ -19,12 +19,13 @@ export default function App() {
   const [devices, setDevices] = useState([]);
   const [deviceName, setDeviceName] = useState('');
   const [deviceType, setDeviceType] = useState('');
-
+  const [fixedMultiplayer, setFixedMultiplayer] = useState(0);
+  const [fixed, setFixed] = useState(false);
   
   useEffect(() => {
     fetchData();
     loadDevices();
-    
+    getFixedPrice();
   }, []);
 
   const loadDevices = async () => {
@@ -94,7 +95,12 @@ export default function App() {
 
   };
 
-  
+  const handleFixedPrice = (event) => {
+    setFixed(event)
+    
+    console.log("fixed", fixed)
+    console.log("price", fixedMultiplayer)
+  }
   
 
 
@@ -126,22 +132,24 @@ export default function App() {
       const date = new Date(entry.time);
       const dayKey = date.toISOString().split('T')[0];
       const weekDay = date.getDay(); // 0 (Sunday) through 6 (Saturday)
-  
+      
       if (!tdailyData[dayKey]) {
         tdailyData[dayKey] = {
           date: dayKey,
           day: weekDay,
           totalWatts: 0,
           totalPrice: 0,
+          fixedPrice: 0,
         };
       }
-  
+      
       tdailyData[dayKey].totalWatts += entry.watts_during_time_interval;
       tdailyData[dayKey].totalPrice += entry.price_during_time_interval;
+      tdailyData[dayKey].fixedPrice += (entry.watts_during_time_interval/1000)*fixedMultiplayer;
     });
     const dataArray = Object.values(tdailyData)
     setDailyData(dataArray);
-    
+    console.log(dataArray)
   };
   
   
@@ -174,10 +182,24 @@ export default function App() {
   };
   
 
-
+  const saveFixedPrice = async (price) => {
+    try {
+      await AsyncStorage.setItem('fixedPrice', price);
+    } catch (error) {
+      console.error('Error saving fixed price:', error);
+    }
+  };
 
   
-
+  const getFixedPrice = async () => {
+    try {
+      const value = await AsyncStorage.getItem('fixedPrice');
+      setFixedMultiplayer(value)
+    } catch (error) {
+      console.error('Error getting fixed price:', error);
+      return '';
+    }
+  };
  
 
   return (
@@ -247,8 +269,15 @@ export default function App() {
   )}
 </Tab.Screen>
           
-          <Tab.Screen name="Settings" component={SettingsScreen} />
-          
+          <Tab.Screen name="Settings">
+            {(props) => (
+    <SettingsScreen
+      {...props}
+      handleFixedPrice={handleFixedPrice}
+      saveFixedPrice={saveFixedPrice}
+    />
+  )}
+      </Tab.Screen>    
         </Tab.Navigator>
         
       </SafeAreaView>

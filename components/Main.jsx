@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
 
 const Main = ({ dailyData, devices, handleDevicePress }) => {
   const [activeDevice, setActiveDevice] = useState(null);
-
+  
   const handleButtonPress = (deviceName) => {
     setActiveDevice(deviceName.name === activeDevice ? null : deviceName.name);
     

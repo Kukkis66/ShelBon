@@ -9,13 +9,14 @@ import SwitchButtons from './SwitchButtons';
 
 
 
-const Barchart = ({dailyData}, {activeDevice}) => {
+const Barchart = ({dailyData, activeDevice}) => {
 
 const [showWatts, setShowWatts] = useState(false);
 const [chartData, setChartData] = useState([])
 const [currentWeek, setCurrentWeek] = useState(0);
 const [currentYear, setCurrentYear] = useState(0);// State to track the current week
 const daysOfWeekStartingFromMonday = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const deviceWidth = Dimensions.get('window').width
 
 const fetchDataForWeek = async (week) => {
     try {
@@ -91,7 +92,7 @@ const toggleSwitch = (event) => {
 }
 
 
-const deviceWidth = Dimensions.get('window').width
+
 
 
 const getWeekNumber = (timestamp) => {
@@ -145,9 +146,9 @@ const getWeekNumber = (timestamp) => {
           showValuesOnTopOfBars={true}
           
           chartConfig={{
-            backgroundColor: '#F3EFEF',
+            backgroundColor: '#F4F1E9',
             backgroundGradientFrom: '#F3EFEF',
-            backgroundGradientTo: '#D2E9F5',
+            backgroundGradientTo: '#AED9E0',
             decimalPlaces: showWatts ? 1 : 2,
             fillShadowGradientTo: '#6E798C',
             fillShadowGradient: '#6E798C',
@@ -182,9 +183,12 @@ const getWeekNumber = (timestamp) => {
         
         />
         <View style={styles.weekArrowsContainer}>
-        <TouchableOpacity onPress={() => handleWeekChange(-1)}>
+          {activeDevice === null ? ( <View >
+        <Text style={styles.nonPressableArrow}>{' < '}</Text>
+        </View>):(<TouchableOpacity onPress={() => handleWeekChange(-1)}>
           <Text style={styles.arrow}>{' < '}</Text>
-        </TouchableOpacity>
+        </TouchableOpacity>)}
+        
         <Text style={styles.currentWeekIndicator}>{currentWeek}/{currentYear}</Text>
         {currentWeek < currentWeekNumber() || currentYear < currentYearNumber() ? (
         <TouchableOpacity onPress={() => handleWeekChange(1)}>
