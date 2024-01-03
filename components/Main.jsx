@@ -61,7 +61,7 @@ const Main = ({ dailyData, devices, handleDevicePress }) => {
   return (
     
     <View style={styles.container}>
-      <Barchart dailyData={dailyData}
+      <Barchart dailyData={dailyData} activeDevice={activeDevice}
       />
       <ScrollView contentContainerStyle={styles.scrollContent}>
       {devices.map((deviceName) => (

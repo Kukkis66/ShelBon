@@ -9,7 +9,7 @@ import SwitchButtons from './SwitchButtons';
 
 
 
-const Barchart = ({dailyData}) => {
+const Barchart = ({dailyData}, {activeDevice}) => {
 
 const [showWatts, setShowWatts] = useState(false);
 const [chartData, setChartData] = useState([])
@@ -39,7 +39,7 @@ const fetchDataForWeek = async (week) => {
     setCurrentWeek(currentWeekNumber)
     setCurrentYear(currentYearNumber)
     
-  }, [])
+  }, [activeDevice])
   
   const currentWeekNumber = () => {
     const thisWeek = getWeekNumber(new Date());
@@ -111,12 +111,12 @@ const getWeekNumber = (timestamp) => {
       const isFirstWeekOfCurrentYear = prevWeek === 1 && increment === -1;
       const isLastWeekOfCurrentYear = prevWeek === 52 && increment === 1;
       if (isFirstWeekOfCurrentYear) {
-        // If the current week is 1 and the user presses backward, set to the last week of the previous year
-        setCurrentWeekAndYear(52, currentYear - 1); // Update this function to set both week and year
+        
+        setCurrentWeekAndYear(52, currentYear - 1); 
       }
       if (isLastWeekOfCurrentYear) {
-        // If the current week is 1 and the user presses backward, set to the last week of the previous year
-        setCurrentWeekAndYear(1, currentYear + 1); // Update this function to set both week and year
+       
+        setCurrentWeekAndYear(1, currentYear + 1); 
       }
        else {
         // Otherwise, update the week normally

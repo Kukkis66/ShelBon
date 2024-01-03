@@ -96,13 +96,13 @@ export default function App() {
 
   
   
-console.log(devices)
+
 
   const fetchData = async (deviceId) => {
     try {
       const response = await axios.get(`http://sheldonapi.ddns.net/api/device/${deviceId}`);
       
-      console.log(response.data)
+      
       setData(response.data);
       transformToDaily(response.data);
     } catch (error) {
@@ -225,7 +225,7 @@ console.log(devices)
            >
             <Tab.Screen
   name="Home"
-  options={{ title: 'Sheldon' }}
+  options={{ title: 'ShelBon' }}
 >
   {(props) => <Main {...props} dailyData={dailyData} data={data} devices={devices} handleDevicePress={handleDevicePress} />}
 </Tab.Screen>
