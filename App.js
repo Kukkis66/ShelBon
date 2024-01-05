@@ -22,6 +22,7 @@ export default function App() {
   const [fixedMultiplayer, setFixedMultiplayer] = useState(0);
   const [fixed, setFixed] = useState(false);
   
+  
   useEffect(() => {
     fetchData();
     loadDevices();
@@ -65,10 +66,10 @@ export default function App() {
       
       const updateEndpoint = 'http://sheldonapi.ddns.net/api/settings';
   
-      // Make a PUT request to update the 'shellies' array
+      
       axios.put(updateEndpoint, { shellies: [...devices, newDevice] })
         .then(response => {
-          // Handle the response, if needed
+          
           console.log(response.data);
           setDevices([...devices, newDevice]);
           saveDevices();
@@ -76,11 +77,11 @@ export default function App() {
           setDeviceType('');
         })
         .catch(error => {
-          // Handle the error
+          
           console.error('Error updating settings:', error);
         });
   
-      // Update the local state and save to settings.json
+      
       
     }
   };
@@ -145,7 +146,7 @@ export default function App() {
       
       tdailyData[dayKey].totalWatts += entry.watts_during_time_interval;
       tdailyData[dayKey].totalPrice += entry.price_during_time_interval;
-      tdailyData[dayKey].fixedPrice += (entry.watts_during_time_interval/1000)*fixedMultiplayer;
+      tdailyData[dayKey].fixedPrice += ((entry.watts_during_time_interval/1000)*fixedMultiplayer);
     });
     const dataArray = Object.values(tdailyData)
     setDailyData(dataArray);
@@ -169,11 +170,7 @@ export default function App() {
     // Make a DELETE request to delete the device
     axios.delete(deleteEndpoint)
       .then(response => {
-        // Handle the response, if needed
-        console.log(response.data);
-  
-        // Update the local state and save to settings.json
-        
+       console.log(response.data)
       })
       .catch(error => {
         // Handle the error
@@ -235,21 +232,33 @@ export default function App() {
             borderTopWidth: 0,
             
           },
+          headerTitle: fixed ? 'FixedPrice' : 'SpotPrice',
+          
           headerStyle: {
             backgroundColor: "#F0E5DA",
             
           },
           headerTitleStyle: {
             color: '#E85A4F',
+            fontSize: 25,
            
           },
           })}
            >
             <Tab.Screen
   name="Home"
-  options={{ title: 'ShelBon' }}
+  
 >
-  {(props) => <Main {...props} dailyData={dailyData} data={data} devices={devices} handleDevicePress={handleDevicePress} />}
+  {(props) => 
+    <Main 
+    {...props} 
+    dailyData={dailyData} 
+    data={data} 
+    devices={devices} 
+    handleDevicePress={handleDevicePress}
+    fixed={fixed}
+    />
+    }
 </Tab.Screen>
 
 <Tab.Screen
@@ -275,6 +284,8 @@ export default function App() {
       {...props}
       handleFixedPrice={handleFixedPrice}
       saveFixedPrice={saveFixedPrice}
+      fixedMultiplayer={fixedMultiplayer}
+      getFixedPrice={getFixedPrice}
     />
   )}
       </Tab.Screen>    

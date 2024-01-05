@@ -3,55 +3,38 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput,  Button, StyleSheet, Switch } from 'react-native';
 
-const SettingsScreen = ({handleFixedPrice, saveFixedPrice}) => {
+const SettingsScreen = ({handleFixedPrice, saveFixedPrice, fixedMultiplayer, getFixedPrice}) => {
   const [input1, setInput1] = useState('');
-  const [input2, setInput2] = useState('');
+  
   const [checkbox1, setCheckbox1] = useState(false);
-  const [checkbox2, setCheckbox2] = useState(false);
+  
 
   const handleSaveSettings = () => {
     saveFixedPrice(input1)
+    console.log(input1)
     handleFixedPrice(checkbox1)
-
-    console.log('Settings saved:', { input1, input2, checkbox2 });
+    getFixedPrice()
   };
 
   return (
     <View style={styles.container}>
-      <Text>Settings Screen</Text>
-
-      <TextInput
-        style={styles.input}
-        placeholder="Input 1"
-        value={input1}
-        onChangeText={(text) => setInput1(text)}
-      />
-
-      <TextInput
-        style={styles.input}
-        placeholder="Input 2"
-        value={input2}
-        onChangeText={(text) => setInput2(text)}
-      />
-
       <View style={styles.checkboxContainer}>
+        <View style={styles.priceContainer}>
+          <Text style={styles.priceText}>Price</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="€"
+            value={input1}
+            onChangeText={(text) => setInput1(text)}
+          />
+        </View>
+        <Text>{fixedMultiplayer}</Text>
         <Switch
           value={checkbox1}
           onValueChange={() => setCheckbox1(!checkbox1)}
           style={styles.checkbox}
         />
-        <Text>Checkbox 1</Text>
       </View>
-
-      <View style={styles.checkboxContainer}>
-        <Switch
-          value={checkbox2}
-          onValueChange={() => setCheckbox2(!checkbox2)}
-          style={styles.checkbox}
-        />
-        <Text>Checkbox 2</Text>
-      </View>
-
       <Button title="Save Settings" onPress={handleSaveSettings} />
     </View>
   );
@@ -60,8 +43,14 @@ const SettingsScreen = ({handleFixedPrice, saveFixedPrice}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    padding: 20,
+  },
+  priceContainer: {
+    flexDirection: 'row',
     alignItems: 'center',
+  },
+  priceText: {
+    marginRight: 8,
   },
   input: {
     height: 40,
@@ -69,12 +58,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     margin: 10,
     padding: 10,
-    width: 200,
+    width: 50,
   },
   checkboxContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    margin: 10,
+    justifyContent: 'space-between',
+    marginVertical: 10,
   },
   checkbox: {
     margin: 8,

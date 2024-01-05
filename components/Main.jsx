@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
 
 
 
-const Main = ({ dailyData, devices, handleDevicePress }) => {
+const Main = ({ dailyData, devices, handleDevicePress, fixed }) => {
   const [activeDevice, setActiveDevice] = useState(null);
   
   const handleButtonPress = (deviceName) => {
@@ -61,7 +61,7 @@ const Main = ({ dailyData, devices, handleDevicePress }) => {
   return (
     
     <View style={styles.container}>
-      <Barchart dailyData={dailyData} activeDevice={activeDevice}
+      <Barchart dailyData={dailyData} activeDevice={activeDevice} fixed={fixed}
       />
       <ScrollView contentContainerStyle={styles.scrollContent}>
       {devices.map((deviceName) => (

@@ -9,7 +9,7 @@ import SwitchButtons from './SwitchButtons';
 
 
 
-const Barchart = ({dailyData, activeDevice}) => {
+const Barchart = ({dailyData, activeDevice, fixed}) => {
 
 const [showWatts, setShowWatts] = useState(false);
 const [chartData, setChartData] = useState([])
@@ -70,21 +70,37 @@ const getDataForDay = (day) => {
       ? {
           totalPrice: matchingEntry.totalPrice.toFixed(2),
           totalWatts: (matchingEntry.totalWatts/1000).toFixed(1),
+          fixedPrice: matchingEntry.fixedPrice.toFixed(2)
         }
-      : { totalPrice: 0, totalWatts: 0 }
+      : { totalPrice: 0, totalWatts: 0, fixedPrice: 0 }
 };
 
 
-const data =
-    {
-    labels: daysOfWeekStartingFromMonday,
-    datasets: [
-      {
-        data: daysOfWeekStartingFromMonday.map((day) => (showWatts ? getDataForDay(day).totalWatts : getDataForDay(day).totalPrice)),
-        
-      },
-    ],
-  };
+const data = fixed
+  ? {
+      labels: daysOfWeekStartingFromMonday,
+
+      datasets: [
+        {
+          data: daysOfWeekStartingFromMonday.map((day) =>
+            showWatts ? getDataForDay(day).totalWatts : getDataForDay(day).fixedPrice
+          ),
+        },
+      ],
+    }
+  : {
+      labels: daysOfWeekStartingFromMonday,
+
+      datasets: [
+        {
+          data: daysOfWeekStartingFromMonday.map((day) =>
+            showWatts ? getDataForDay(day).totalWatts : getDataForDay(day).totalPrice
+          ),
+        },
+      ],
+    };
+
+
 
 
 const toggleSwitch = (event) => {
