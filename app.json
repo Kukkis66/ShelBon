@@ -24,10 +24,24 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      
+      "package": "com.ulostaja66.sheldonapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "ab2559f1-c00d-4eab-93dc-459dcb07dcef"
+      }
+    },
+    "plugins": [
+      ["expo-build-properties", {
+        "android": {
+          "usesCleartextTraffic": true
+        }
+        
+      }]]
   }
 }

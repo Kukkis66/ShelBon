@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, Text, View } from 'react-native';
+import { SafeAreaView, Text, View, StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import axios from 'axios';
 import Main from './components/Main';
@@ -78,7 +79,7 @@ export default function App() {
         })
         .catch(error => {
           
-          console.error('Error updating settings:', error);
+          console.error('Error updating settings:', error.message);
         });
   
       
@@ -113,7 +114,7 @@ export default function App() {
       setData(response.data);
       transformToDaily(response.data);
     } catch (error) {
-      console.log('something went wrong: ', error);
+      error.log('something went wrong: ', error.message);
       
     }
   };
@@ -163,18 +164,19 @@ export default function App() {
 
   const deleteDevice = (deviceId) => {
     
-    const deleteEndpoint = `http://sheldonapi.ddns.net/api/settings/${deviceId}`;
+    const deleteEndpoint = `http://sheldonapi.ddns.net/api/settings/device/${deviceId}`;
     const updatedDevices = devices.filter((device) => device.id !== deviceId);
-    setDevices(updatedDevices);
-    saveDevices();
+    
     // Make a DELETE request to delete the device
     axios.delete(deleteEndpoint)
       .then(response => {
        console.log(response.data)
+       setDevices(updatedDevices);
+      saveDevices();
       })
       .catch(error => {
-        // Handle the error
-        console.error('Error deleting device:', error);
+        
+        console.error('Error deleting device:', error.message);
       });
   };
   
@@ -202,6 +204,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <SafeAreaView style={{ flex: 1 }}>
+      <StatusBar backgroundColor="#F0E5DA" barStyle="dark-content" />
       <Tab.Navigator
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
