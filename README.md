@@ -16,8 +16,13 @@ This mobile application is built with React Native to monitor Shelly data. It se
 
 ## Screenshots
 
-Incoming
+![React-Native App Screenshot](assets/kWh.png?raw=true "Switch between kWh and euros")
 
+![React-Native App Screenshot](assets/Devices.png?raw=true "Add your own shelly-relay")
+
+![React-Native App Screenshot](assets/Settings.png?raw=true "Put in your own price")
+
+![React-Native App Screenshot](assets/FixedPrice.png?raw=true "Put in your own price")
 
 ## Usage
 
