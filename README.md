@@ -1,7 +1,7 @@
 
 # My React-Native App
 
-![React-Native App Screenshot](spot.jpg)
+![React-Native App Screenshot](assets/SporPrice.png?raw=true)
 
 ## Overview
 
@@ -16,7 +16,7 @@ This mobile application is built with React Native to monitor Shelly data. It se
 
 ## Screenshots
 
-![Alt text](assets/SporPrice.png?raw=true "Euro")
+Incoming
 
 
 ## Usage
@@ -25,6 +25,3 @@ This mobile application is built with React Native to monitor Shelly data. It se
 
 
 
-## License
-
-This project is licensed under the MIT Licence.
