@@ -28,13 +28,20 @@ export default function App() {
     fetchData();
     loadDevices();
     getFixedPrice();
+    
   }, []);
 
+  useEffect(() => {
+    if (devices.length > 0) {
+      saveDevices();
+    }
+  }, [devices]);
+  
   const loadDevices = async () => {
     try {
       const path = FileSystem.documentDirectory + 'settings.json';
       const fileExists = await FileSystem.getInfoAsync(path);
-  
+      
       if (fileExists.exists) {
         const content = await FileSystem.readAsStringAsync(path);
         const parsedDevices = JSON.parse(content);
@@ -72,11 +79,13 @@ export default function App() {
         .then(response => {
           
           console.log(response.data);
-          setDevices([...devices, newDevice]);
-          saveDevices();
+          setDevices(prevDevices => [...prevDevices, newDevice]);
+        })
+        .then(() => {
           setDeviceName('');
           setDeviceType('');
         })
+        
         .catch(error => {
           
           console.error('Error updating settings:', error.message);
@@ -86,6 +95,8 @@ export default function App() {
       
     }
   };
+
+  
   
   const handleName = (event) => {
     setDeviceName(event);
@@ -171,13 +182,15 @@ export default function App() {
     axios.delete(deleteEndpoint)
       .then(response => {
        console.log(response.data)
-       setDevices(updatedDevices);
-      saveDevices();
+       
       })
       .catch(error => {
         
         console.error('Error deleting device:', error.message);
       });
+      setDevices(updatedDevices);
+      saveDevices();
+
   };
   
 

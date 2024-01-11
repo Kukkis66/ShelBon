@@ -30,7 +30,7 @@ const DevicesScreen = (props) => {
         <TextInput
           style={styles.input}
           value={props.deviceName}
-          placeholder="Shelly1/Olohuone"
+          placeholder="Shelly1/Lightning"
           onChangeText={(text) => props.handleName(text)}
         />
         <Text style={styles.label}>Device IP-Address:</Text>
@@ -41,7 +41,7 @@ const DevicesScreen = (props) => {
           placeholder="192.168.0.1"
           onChangeText={(text) => props.handleType(text)}
         />
-        <Button title="Add Device" onPress={props.addDevice} color="#E85A4F" />
+        <Button style={styles.button} title="Add Device" onPress={props.addDevice} color='tomato' />
       </View>
       <FlatList
         data={props.devices}
@@ -93,12 +93,15 @@ const styles = StyleSheet.create({
   item:{
     fontSize: 20,
   },
+  
   deleteButton:{
     fontSize: 20,
     padding: 10,
       borderWidth: 1,
       borderRadius: 4,
       borderColor: '#ccc',
+      backgroundColor: '#f1f1f1',
+      color: 'black',
   },
   // Modal styles
   modalContainer: {

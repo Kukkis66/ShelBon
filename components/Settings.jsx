@@ -35,7 +35,7 @@ const SettingsScreen = ({handleFixedPrice, saveFixedPrice, fixedMultiplayer, get
           style={styles.checkbox}
         />
       </View>
-      <Button title="Save Settings" onPress={handleSaveSettings} />
+      <Button title="Save Settings" onPress={handleSaveSettings} color='tomato' />
     </View>
   );
 };
@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    backgroundColor: '#F4F1E9'
   },
   priceContainer: {
     flexDirection: 'row',
